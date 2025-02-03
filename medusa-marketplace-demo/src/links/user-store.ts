@@ -4,5 +4,8 @@ import { defineLink } from "@medusajs/framework/utils";
 
 export default defineLink(
   UserModule.linkable.user,
-  StoreModule.linkable.store
+    {
+        linkable: StoreModule.linkable.store,
+        deleteCascade: true
+    }
 );

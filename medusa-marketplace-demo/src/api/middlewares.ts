@@ -9,6 +9,11 @@ import { onlyForSuperAdmins } from "./middlewares/only-for-super-admin";
 export default defineMiddlewares({
   routes: [
     {
+      method: ["POST", "GET"],
+      matcher: "/admin/merchants/*",
+      middlewares: [checkApiKey],
+    },
+    {
       method: ["GET", "POST"],
       matcher: "/admin/*",
       middlewares: [registerLoggedInUser],
@@ -54,26 +59,31 @@ export default defineMiddlewares({
     },
     {
       method: ["GET"],
-      matcher: "/admin/stores",
+      matcher: "/admin/stores/*",
       middlewares: [
         addStoreIdToFilterableFields,
+        maybeApplyLinkFilter({
+          entryPoint: "user_store",
+          resourceId: "user_id",
+          filterableField: "store_id",
+        }),
         moveIdsToQueryFromFilterableFields,
       ],
     },
     {
       method: ["POST"],
       matcher: "/create-super-store",
-      middlewares: [checkApiKey],
+      middlewares: [checkApiKey, onlyForSuperAdmins],
     },
     {
       method: ["POST"],
       matcher: "/admin/impersonate",
-      middlewares: [onlyForSuperAdmins],
+      middlewares: [checkApiKey, onlyForSuperAdmins],
     },
     {
       method: ["POST"],
       matcher: "/admin/impersonate-reset",
-      middlewares: [onlyForSuperAdmins],
+      middlewares: [checkApiKey, onlyForSuperAdmins],
     },
   ],
 });

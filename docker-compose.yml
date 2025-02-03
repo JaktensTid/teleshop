@@ -16,6 +16,8 @@ services:
       - marketplace-db-data:/var/lib/postgresql/data
     networks:
       - internal
+    expose:
+      - 5432:5432
 
 networks:
   internal:

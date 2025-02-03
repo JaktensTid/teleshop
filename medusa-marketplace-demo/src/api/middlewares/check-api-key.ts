@@ -5,7 +5,7 @@ import type {
 } from "@medusajs/framework/http";
 
 export async function checkApiKey(req: MedusaRequest, res: MedusaResponse, next: MedusaNextFunction) {
-  const apiKey = req.headers.authorization;
+  const apiKey = req.headers["x-api-key"];
   if (apiKey !== process.env.API_KEY) {
     return res.status(403).json({ error: "Wrong api key" });
   }

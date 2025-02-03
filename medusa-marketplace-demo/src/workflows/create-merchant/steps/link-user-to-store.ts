@@ -1,5 +1,6 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils";
+import {IStoreModuleService, IUserModuleService} from "@medusajs/framework/types";
 
 type LinkUserToStoreStepInput = {
   userId: string;
@@ -9,7 +10,7 @@ type LinkUserToStoreStepInput = {
 export const linkUserToStoreStep = createStep(
   "link-user-to-store",
   async ({ userId, storeId }: LinkUserToStoreStepInput, { container }) => {
-    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK);
+    const remoteLink = container.resolve(ContainerRegistrationKeys.LINK);
 
     const linkArray = remoteLink.create({
       [Modules.USER]: {
@@ -26,7 +27,7 @@ export const linkUserToStoreStep = createStep(
     });
   },
   async ({ userId, storeId }, { container }) => {
-    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK);
+    const remoteLink = container.resolve(ContainerRegistrationKeys.LINK);
 
     remoteLink.dismiss({
       [Modules.USER]: {
